@@ -1,0 +1,26 @@
+name: CI - Unit and Integration Tests
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
+jobs:
+  #Test's job
+  tests:
+    name: Unit tests and Integration tests
+    #Run on Ubuntu using the latest version
+    runs-on: ubuntu-latest
+    #Job's steps
+    steps:
+      #Check-out your repository under $GITHUB_WORKSPACE, so your workflow can access it
+      - uses: actions/checkout@v1
+      #Set up JDK
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: '17'
+      #Run Tests
+      - name: Run Tests
+        # working-directory:
+        run: mvn install failsafe:integration-test
