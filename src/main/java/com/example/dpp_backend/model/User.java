@@ -24,6 +24,14 @@ public class User {
     private String contact;
     private String type;
 
+    public User(RegisterDTO registerDTO) {
+        this.email = registerDTO.getEmail();
+        this.name = registerDTO.getName();
+        this.address = registerDTO.getAddress();
+        this.contact = registerDTO.getContact();
+        this.type = "pending";
+    }
+
     public void setPassword(String password) {
         PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         this.password = encoder.encode(password);
