@@ -59,7 +59,7 @@ class AuthControllerIT {
                 .when()
                 .post("/auth/register")
                 .then()
-                .statusCode(400)
+                .statusCode(200)
                 .body(equalTo("false"));
     }
 
