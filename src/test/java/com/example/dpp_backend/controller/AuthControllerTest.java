@@ -1,7 +1,9 @@
 package com.example.dpp_backend.controller;
 
 
+import com.example.dpp_backend.model.LoginDTO;
 import com.example.dpp_backend.model.RegisterDTO;
+import com.example.dpp_backend.model.UserDetailsDTO;
 import com.example.dpp_backend.service.AuthService;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,6 +30,8 @@ class AuthControllerTest {
     private AuthService authService;
 
     private RegisterDTO register;
+    private LoginDTO login;
+    private UserDetailsDTO userDetails;
 
     @BeforeEach
     void setUp() {
@@ -39,6 +43,15 @@ class AuthControllerTest {
         register.setName("name");
         register.setAddress("address");
         register.setContact("contact");
+
+        login = new LoginDTO();
+        login.setEmail("test@test.com");
+        login.setPassword("test");
+
+        userDetails = new UserDetailsDTO();
+        userDetails.setEmail("test@test.com");
+        userDetails.setName("name");
+        userDetails.setAddress("address");
     }
 
     @DisplayName("Register user with existing email")
@@ -69,6 +82,36 @@ class AuthControllerTest {
                         .then()
                         .statusCode(200)
                         .body(equalTo("true"));
+    }
+
+    @DisplayName("Login user with correct credentials")
+    @Test
+    void testLoginUser() {
+        when(authService.loginUser(any())).thenReturn(userDetails);
+
+        RestAssuredMockMvc.given()
+                        .contentType("application/json")
+                        .body(login)
+                        .when()
+                        .post("/auth/login")
+                        .then()
+                        .statusCode(200)
+                        .body("email", equalTo("test@test.com"));
+    }
+
+    @DisplayName("Login user with incorrect credentials")
+    @Test
+    void testLoginUser2() {
+        when(authService.loginUser(any())).thenReturn(null);
+
+        RestAssuredMockMvc.given()
+                        .contentType("application/json")
+                        .body(login)
+                        .when()
+                        .post("/auth/login")
+                        .then()
+                        .statusCode(200)
+                        .body(is(emptyOrNullString()));
     }
 
 }

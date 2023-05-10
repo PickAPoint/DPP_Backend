@@ -20,8 +20,22 @@ public class AuthService {
             log.error("User already exists");
             return false;
         }
-        User user = new User(register);
+        User user = new User();
+        user.fromRegister(register);
         userRepository.save(user);
         return true;
+    }
+
+    public UserDetailsDTO loginUser(LoginDTO login) {
+        User user = userRepository.findByEmail(login.getEmail()).orElse(null);
+        if (user == null) {
+            log.error("User not found");
+            return null;
+        }
+        if (!user.checkPassword(login.getPassword())) {
+            log.error("Wrong password");
+            return null;
+        }
+        return new UserDetailsDTO(user);
     }
 }

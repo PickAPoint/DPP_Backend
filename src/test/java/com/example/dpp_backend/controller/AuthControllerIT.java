@@ -1,5 +1,6 @@
 package com.example.dpp_backend.controller;
 
+import com.example.dpp_backend.model.LoginDTO;
 import com.example.dpp_backend.model.RegisterDTO;
 import com.example.dpp_backend.model.User;
 import com.example.dpp_backend.repository.UserRepository;
@@ -20,6 +21,7 @@ class AuthControllerIT {
     @LocalServerPort
     private int port;
     private RegisterDTO register;
+    private LoginDTO login;
 
     @Autowired
     private UserRepository userRepository;
@@ -29,19 +31,26 @@ class AuthControllerIT {
 
         RestAssured.port = port;
 
+        userRepository.deleteAll();
+
         register = new RegisterDTO();
         register.setEmail("test@test.com");
         register.setPassword("test");
         register.setName("name");
         register.setAddress("address");
         register.setContact("contact");
+
+        login = new LoginDTO();
+        login.setEmail("test@test.com");
+        login.setPassword("test");
     }
 
     @DisplayName("Register user with existing email")
     @Test
     void testRegisterUserInvalid() {
 
-        User user = new User(register);
+        User user = new User();
+        user.fromRegister(register);
         userRepository.save(user);
 
         RestAssured.given()
@@ -66,6 +75,38 @@ class AuthControllerIT {
                 .then()
                 .statusCode(200)
                 .body(equalTo("true"));
+    }
+
+    @DisplayName("Login user with invalid credentials")
+    @Test
+    void testLoginUserInvalidEmail() {
+
+        RestAssured.given()
+                .contentType("application/json")
+                .body(login)
+                .when()
+                .post("/auth/login")
+                .then()
+                .statusCode(200)
+                .body(is(emptyOrNullString()));
+    }
+
+    @DisplayName("Login user with valid credentials")
+    @Test
+    void testLoginUserSuccess() {
+
+        User user = new User();
+        user.fromRegister(register);
+        userRepository.save(user);
+
+        RestAssured.given()
+                .contentType("application/json")
+                .body(login)
+                .when()
+                .post("/auth/login")
+                .then()
+                .statusCode(200)
+                .body("name", equalTo("name"));
     }
 
 }
