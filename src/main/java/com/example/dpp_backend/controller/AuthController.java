@@ -30,4 +30,17 @@ public class AuthController {
         }
         return ResponseEntity.ok(true);
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<UserDetailsDTO> loginUser(
+            @RequestBody LoginDTO login
+    ) {
+        log.info("Logging in user {}", login.getEmail());
+        UserDetailsDTO userDetails = authService.loginUser(login);
+        if (userDetails == null) {
+            log.error("Error logging in user {}", login.getEmail());
+            return ResponseEntity.ok(null);
+        }
+        return ResponseEntity.ok(userDetails);
+    }
 }

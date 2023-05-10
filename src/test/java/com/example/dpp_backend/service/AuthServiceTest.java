@@ -1,6 +1,7 @@
 package com.example.dpp_backend.service;
 
 
+import com.example.dpp_backend.model.LoginDTO;
 import com.example.dpp_backend.model.RegisterDTO;
 import com.example.dpp_backend.model.User;
 import com.example.dpp_backend.repository.UserRepository;
@@ -33,11 +34,12 @@ class AuthServiceTest {
 
     @DisplayName("Register user with existing email")
     @Test
-    void testRegisterUser() {
+    void testRegisterUserError() {
 
         RegisterDTO register = new RegisterDTO();
         register.setEmail("test1@test.com");
-        User test1 = new User(register);
+        User test1 = new User();
+        test1.fromRegister(register);
 
         when(userRepository.findByEmail("test1@test.com")).thenReturn(Optional.of(test1));
 
@@ -47,7 +49,7 @@ class AuthServiceTest {
 
     @DisplayName("Register user with valid email")
     @Test
-    void testRegisterUserEmail() {
+    void testRegisterUserValid() {
 
         RegisterDTO register = new RegisterDTO();
         register.setEmail("test2@test.com");
@@ -55,5 +57,38 @@ class AuthServiceTest {
         when(userRepository.findByEmail("test2@test.com")).thenReturn(Optional.empty());
 
         assertThat(authService.registerUser(register), is(true));
+    }
+
+
+    @DisplayName("Login user with valid email and password")
+    @Test
+    void testLoginUserValid() {
+
+        LoginDTO login = new LoginDTO();
+        login.setEmail("test@test.com");
+        login.setPassword("test");
+        User test = new User();
+        test.setEmail(login.getEmail());
+        test.setPassword(login.getPassword());
+
+        when(userRepository.findByEmail("test@test.com")).thenReturn(Optional.of(test));
+
+        assertThat(authService.loginUser(login), not(nullValue()));
+    }
+
+    @DisplayName("Login user with invalid credentials")
+    @Test
+    void testLoginUserInvalid() {
+
+        LoginDTO login = new LoginDTO();
+        login.setEmail("test@test.com");
+        login.setPassword("test");
+        User test = new User();
+        test.setEmail(login.getEmail());
+        test.setPassword("wrong");
+
+        when(userRepository.findByEmail("test@test.com")).thenReturn(Optional.of(test));
+
+        assertThat(authService.loginUser(login), is(nullValue()));
     }
 }

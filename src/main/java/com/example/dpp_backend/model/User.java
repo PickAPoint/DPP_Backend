@@ -24,7 +24,7 @@ public class User {
     private String contact;
     private String type;
 
-    public User(RegisterDTO registerDTO) {
+    public void fromRegister(RegisterDTO registerDTO) {
         this.email = registerDTO.getEmail();
         this.name = registerDTO.getName();
         this.address = registerDTO.getAddress();
