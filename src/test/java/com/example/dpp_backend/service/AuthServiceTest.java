@@ -38,6 +38,7 @@ class AuthServiceTest {
 
         RegisterDTO register = new RegisterDTO();
         register.setEmail("test1@test.com");
+        register.setPassword("test");
         User test1 = new User();
         test1.fromRegister(register);
 
@@ -53,6 +54,7 @@ class AuthServiceTest {
 
         RegisterDTO register = new RegisterDTO();
         register.setEmail("test2@test.com");
+        register.setPassword("test");
 
         when(userRepository.findByEmail("test2@test.com")).thenReturn(Optional.empty());
 

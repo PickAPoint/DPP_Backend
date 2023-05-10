@@ -30,6 +30,7 @@ public class User {
         this.address = registerDTO.getAddress();
         this.contact = registerDTO.getContact();
         this.type = "pending";
+        setPassword(registerDTO.getPassword());
     }
 
     public void setPassword(String password) {

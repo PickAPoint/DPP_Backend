@@ -23,4 +23,4 @@ jobs:
       #Run Tests
       - name: Run Tests
         # working-directory:
-        run: mvn install failsafe:integration-test
+        run: mvn verify
