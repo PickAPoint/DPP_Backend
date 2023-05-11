@@ -20,5 +20,4 @@ public class UpdateOrderDTO {
                         .contains(this.newState) && this.packageId > 0
         );
     }
-
 }
