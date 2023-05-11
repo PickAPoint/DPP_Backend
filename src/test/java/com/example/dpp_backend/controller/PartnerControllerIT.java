@@ -20,7 +20,7 @@ import static org.hamcrest.Matchers.*;
 
 // integration tests with RestAssured and hamcrest
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class PartnerControllerIT {
+class PartnerControllerIT {
 
     @LocalServerPort
     private int port;
