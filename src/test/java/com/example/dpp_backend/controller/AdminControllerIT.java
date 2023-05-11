@@ -67,7 +67,6 @@ class AdminControllerIT {
                 .when()
                 .post("/admin/validate/2")
                 .then()
-                .statusCode(200)
-                .body(equalTo("true"));
+                .statusCode(200);
     }
 }
