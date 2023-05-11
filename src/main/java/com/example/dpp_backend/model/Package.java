@@ -29,4 +29,10 @@ public class Package {
     @OneToOne
     private Client client;
 
+    public void fromOrder(OrderDTO orderDTO) {
+        this.eStore = orderDTO.getEStore();
+        this.orderDate = orderDTO.getOrderDate();
+        this.orderState = "OrderPlaced";
+    }
+
 }
