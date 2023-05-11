@@ -29,9 +29,10 @@ class AdminControllerIT {
 
         RestAssured.port = port;
 
-        userRepository.deleteAll();
+        userRepository.flush();
 
         user1 = new User();
+        user1.setId(1);
         user1.setEmail("user1@test.com");
         user1.setPassword("test");
         user1.setType("Pending");
@@ -51,5 +52,18 @@ class AdminControllerIT {
                     .statusCode(200)
                     .body("$", hasSize(1))
                     .body("[0].email", equalTo("user1@test.com"));
+    }
+
+    @DisplayName("Validate user (valid)")
+    @Test
+    void testValidateUserValid() {
+
+            RestAssured.given()
+                    .contentType("application/json")
+                    .when()
+                    .post("/admin/validate/1")
+                    .then()
+                    .statusCode(200)
+                    .body(equalTo("true"));
     }
 }

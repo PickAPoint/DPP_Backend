@@ -37,13 +37,16 @@ public class EStoreService {
 
     public boolean updateOrder(UpdateOrderDTO updateOrderDTO) {
         if (!updateOrderDTO.isValid()){
+            log.error("Invalid update order request");
             return false;
         }
         Package pkj = packageRepository.findById(updateOrderDTO.getPackageId()).orElse(null);
         if (pkj == null) {
+            log.error("Package not found");
             return false;
         }
         if (!pkj.canBeUpdated()) {
+            log.error("Package cannot be updated");
             return false;
         }
         State state = new State();

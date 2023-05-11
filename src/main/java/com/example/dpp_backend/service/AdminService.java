@@ -20,11 +20,26 @@ public class AdminService {
         List<User> users = userRepository.findAll();
         List<UserDetailsDTO> usersDTO = new ArrayList<>();
         for (User user : users) {
-            if (user.getType().equals("admin")) {
+            if (user.getType().equals("Admin")) {
                 continue;
             }
             usersDTO.add(new UserDetailsDTO(user));
         }
         return usersDTO;
+    }
+
+    public boolean validateUser(int id) {
+        User user = userRepository.findById(id).orElse(null);
+        if (user == null) {
+            log.info("User not found");
+            return false;
+        }
+        if (!user.getType().equals("Pending")) {
+            log.info("User is not pending");
+            return false;
+        }
+        user.setType("Partner");
+        userRepository.save(user);
+        return true;
     }
 }

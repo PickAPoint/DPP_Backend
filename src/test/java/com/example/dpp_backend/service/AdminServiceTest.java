@@ -23,6 +23,7 @@ class AdminServiceTest {
     private AdminService adminService;
     private User user1;
     private User user2;
+    private User user3;
 
     @BeforeEach
     void setUp() {
@@ -36,15 +37,42 @@ class AdminServiceTest {
         user2 = new User();
         user2.setEmail("user2@test.com");
         user2.setPassword("test");
-        user2.setType("Pending");
+        user2.setType("Admin");
+
+        user3 = new User();
+        user3.setEmail("user3@test.com");
+        user3.setPassword("test");
+        user3.setType("Partner");
     }
 
     @DisplayName("Get all users")
     @Test
     void testGetAllUsers() {
-        when(userRepository.findAll()).thenReturn(java.util.Arrays.asList(user1, user2));
+        when(userRepository.findAll()).thenReturn(java.util.Arrays.asList(user1, user2, user3));
 
         assertThat(adminService.getAllUsers(), hasSize(2));
+    }
+
+    @DisplayName("Validate user (valid)")
+    @Test
+    void testValidateUserValid() {
+        when(userRepository.findById(1)).thenReturn(java.util.Optional.of(user1));
+
+        assertThat(adminService.validateUser(1), is(true));
+    }
+
+    @DisplayName("Validate user (invalid id)")
+    @Test
+    void testValidateUserInvalidId() {
+        assertThat(adminService.validateUser(1), is(false));
+    }
+
+    @DisplayName("Validate user (invalid type)")
+    @Test
+    void testValidateUserInvalidType() {
+        when(userRepository.findById(1)).thenReturn(java.util.Optional.of(user2));
+
+        assertThat(adminService.validateUser(1), is(false));
     }
 
 }

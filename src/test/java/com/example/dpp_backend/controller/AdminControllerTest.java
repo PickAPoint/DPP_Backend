@@ -57,4 +57,19 @@ class AdminControllerTest {
         verify(adminService, times(1)).getAllUsers();
     }
 
+    @DisplayName("Validate user (valid)")
+    @Test
+    void testValidateUserValid() {
+        when(adminService.validateUser(anyInt())).thenReturn(true);
+
+        RestAssuredMockMvc.given()
+                .when()
+                .post("/admin/validate/1")
+                .then()
+                .statusCode(200)
+                .body(is("true"));
+
+        verify(adminService, times(1)).validateUser(anyInt());
+    }
+
 }
