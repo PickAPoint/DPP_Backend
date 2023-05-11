@@ -1,14 +1,14 @@
 package com.example.dpp_backend.service;
 
-import com.example.dpp_backend.model.Client;
-import com.example.dpp_backend.model.OrderDTO;
+import com.example.dpp_backend.model.*;
 import com.example.dpp_backend.model.Package;
-import com.example.dpp_backend.model.State;
 import com.example.dpp_backend.repository.ClientRepository;
 import com.example.dpp_backend.repository.PackageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 @Slf4j
 @Service
@@ -33,5 +33,25 @@ public class EStoreService {
         pkj = packageRepository.save(pkj);
 
         return pkj.getId();
+    }
+
+    public boolean updateOrder(UpdateOrderDTO updateOrderDTO) {
+        if (!updateOrderDTO.isValid()){
+            return false;
+        }
+        Package pkj = packageRepository.findById(updateOrderDTO.getPackageId()).orElse(null);
+        if (pkj == null) {
+            return false;
+        }
+        if (!pkj.canBeUpdated()) {
+            return false;
+        }
+        State state = new State();
+        state.setOrderState(updateOrderDTO.getNewState());
+        state.setOrderDate(new Date());
+        pkj.getStates().add(state);
+        pkj.setOrderState(updateOrderDTO.getNewState());
+        packageRepository.save(pkj);
+        return true;
     }
 }

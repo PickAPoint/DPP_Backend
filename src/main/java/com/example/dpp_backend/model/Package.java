@@ -35,4 +35,8 @@ public class Package {
         this.orderState = "OrderPlaced";
     }
 
+    public boolean canBeUpdated() {
+        return !this.orderState.equals("Cancelled") && !this.orderState.equals("Completed");
+    }
+
 }
