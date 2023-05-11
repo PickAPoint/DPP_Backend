@@ -78,7 +78,7 @@ class AuthServiceTest {
         assertThat(authService.loginUser(login), not(nullValue()));
     }
 
-    @DisplayName("Login user with invalid credentials")
+    @DisplayName("Login user with invalid password")
     @Test
     void testLoginUserInvalid() {
 
@@ -90,6 +90,17 @@ class AuthServiceTest {
         test.setPassword("wrong");
 
         when(userRepository.findByEmail("test@test.com")).thenReturn(Optional.of(test));
+
+        assertThat(authService.loginUser(login), is(nullValue()));
+    }
+
+    @DisplayName("Login user with invalid email")
+    @Test
+    void testLoginUserInvalidEmail() {
+
+        LoginDTO login = new LoginDTO();
+        login.setEmail("invalid");
+        login.setPassword("test");
 
         assertThat(authService.loginUser(login), is(nullValue()));
     }
