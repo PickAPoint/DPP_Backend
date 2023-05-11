@@ -72,4 +72,19 @@ class AdminControllerTest {
         verify(adminService, times(1)).validateUser(anyInt());
     }
 
+    @DisplayName("Delete user (valid)")
+    @Test
+    void testDeleteUserValid() {
+        when(adminService.deleteUser(anyInt())).thenReturn(true);
+
+        RestAssuredMockMvc.given()
+                .when()
+                .delete("/admin/users/1")
+                .then()
+                .statusCode(200)
+                .body(is("true"));
+
+        verify(adminService, times(1)).deleteUser(anyInt());
+    }
+
 }

@@ -69,4 +69,21 @@ class AdminControllerIT {
                 .then()
                 .statusCode(200);
     }
+
+    @DisplayName("Delete user (valid)")
+    @Test
+    void testDeleteUserValid() {
+
+        User user2 = new User();
+        user2.setId(2);
+        user2.setType("Pending");
+        userRepository.save(user2);
+
+        RestAssured.given()
+                .contentType("application/json")
+                .when()
+                .delete("/admin/users/2")
+                .then()
+                .statusCode(200);
+    }
 }
