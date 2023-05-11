@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,8 +23,8 @@ public class Package {
     private Date orderDate;
     private String orderState;
 
-    @OneToMany(mappedBy = "pkg")
-    private List<State> states;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<State> states = new ArrayList<>();
 
     @OneToOne
     private Client client;
