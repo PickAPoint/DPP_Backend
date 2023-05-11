@@ -9,9 +9,9 @@ FROM openjdk:17-jdk-alpine
 RUN addgroup -S spring && adduser -S spring -G spring
 USER spring:spring
 COPY --from=build /home/app/target/*.jar app.jar
-EXPOSE 8080
+EXPOSE 8081
 ENTRYPOINT ["java","-jar","app.jar"]
 
 # How to build and run the image:
 # docker build -t hw_backend .
-# docker run -p 8080:8080 hw_backend
+# docker run -p 8081:8081 hw_backend
