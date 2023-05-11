@@ -1,9 +1,7 @@
 package com.example.dpp_backend.service;
 
-import com.example.dpp_backend.model.Client;
-import com.example.dpp_backend.model.OrderDTO;
+import com.example.dpp_backend.model.*;
 import com.example.dpp_backend.model.Package;
-import com.example.dpp_backend.model.State;
 import com.example.dpp_backend.repository.ClientRepository;
 import com.example.dpp_backend.repository.PackageRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -67,5 +65,58 @@ class EStoreServiceTest {
         int id = eStoreService.addNewOrder(orderDTO);
         assertThat(id, notNullValue());
     }
+
+    @DisplayName("Update package state (success)")
+    @Test
+    void testUpdatePackageState() {
+        UpdateOrderDTO updateOrderDTO = new UpdateOrderDTO();
+        updateOrderDTO.setPackageId(1);
+        updateOrderDTO.setNewState("Cancelled");
+
+        when(packageRepository.findById(1)).thenReturn(java.util.Optional.of(pkg1));
+        when(packageRepository.save(any())).thenReturn(pkg1);
+
+        boolean success = eStoreService.updateOrder(updateOrderDTO);
+        assertThat(success, is(true));
+    }
+
+    @DisplayName("Update package state (invalid id)")
+    @Test
+    void testUpdatePackageStateInvalidId() {
+        UpdateOrderDTO updateOrderDTO = new UpdateOrderDTO();
+        updateOrderDTO.setPackageId(2);
+        updateOrderDTO.setNewState("Cancelled");
+
+        when(packageRepository.findById(2)).thenReturn(java.util.Optional.ofNullable(null));
+
+        boolean success = eStoreService.updateOrder(updateOrderDTO);
+        assertThat(success, is(false));
+    }
+
+    @DisplayName("Update package state (invalid new state)")
+    @Test
+    void testUpdatePackageStateInvalidNewState() {
+        UpdateOrderDTO updateOrderDTO = new UpdateOrderDTO();
+        updateOrderDTO.setPackageId(1);
+        updateOrderDTO.setNewState("InvalidState");
+
+        boolean success = eStoreService.updateOrder(updateOrderDTO);
+        assertThat(success, is(false));
+    }
+
+    @DisplayName("Update package state (invalid state transition)")
+    @Test
+    void testUpdatePackageStateInvalidTransition() {
+        UpdateOrderDTO updateOrderDTO = new UpdateOrderDTO();
+        updateOrderDTO.setPackageId(1);
+        updateOrderDTO.setNewState("Cancelled");
+
+        pkg1.setOrderState("Cancelled");
+        when(packageRepository.findById(1)).thenReturn(java.util.Optional.of(pkg1));
+
+        boolean success = eStoreService.updateOrder(updateOrderDTO);
+        assertThat(success, is(false));
+    }
+
 
 }

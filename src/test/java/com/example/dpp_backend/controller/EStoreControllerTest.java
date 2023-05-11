@@ -1,9 +1,7 @@
 package com.example.dpp_backend.controller;
 
-import com.example.dpp_backend.model.Client;
-import com.example.dpp_backend.model.OrderDTO;
+import com.example.dpp_backend.model.*;
 import com.example.dpp_backend.model.Package;
-import com.example.dpp_backend.model.State;
 import com.example.dpp_backend.service.EStoreService;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.BeforeEach;
@@ -75,5 +73,24 @@ class EStoreControllerTest {
                 .body(equalTo("1"));
     }
 
+    @DisplayName("Update package state (success)")
+    @Test
+    void testUpdatePackageStateSuccess() {
+        UpdateOrderDTO updateOrderDTO = new UpdateOrderDTO();
+        updateOrderDTO.setPackageId(1);
+        updateOrderDTO.setNewState("Cancelled");
+
+        when(eStoreService.updateOrder(any())).thenReturn(true);
+
+        RestAssuredMockMvc.given()
+                .contentType("application/json")
+                .body(updateOrderDTO)
+                .when()
+                .put("/eStore/order")
+                .then()
+                .statusCode(200)
+                .body(equalTo("true"));
+
+    }
 
 }

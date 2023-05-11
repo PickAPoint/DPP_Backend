@@ -1,6 +1,7 @@
 package com.example.dpp_backend.controller;
 
 import com.example.dpp_backend.model.OrderDTO;
+import com.example.dpp_backend.model.UpdateOrderDTO;
 import com.example.dpp_backend.service.EStoreService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,5 +23,13 @@ public class EStoreController {
     ){
         log.info("Ordering: {}", orderDTO);
         return ResponseEntity.ok(eStoreService.addNewOrder(orderDTO));
+    }
+
+    @PutMapping("/order")
+    public ResponseEntity<Boolean> updateOrder(
+            @RequestBody UpdateOrderDTO orderDTO
+            ){
+        log.info("Updating order: {}", orderDTO);
+        return ResponseEntity.ok(eStoreService.updateOrder(orderDTO));
     }
 }
