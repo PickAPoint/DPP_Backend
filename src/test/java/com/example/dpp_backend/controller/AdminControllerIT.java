@@ -27,15 +27,11 @@ class AdminControllerIT {
 
         RestAssured.port = port;
 
-        userRepository.flush();
-
         user1 = new User();
         user1.setId(1);
         user1.setEmail("user1@test.com");
         user1.setPassword("test");
         user1.setType("Pending");
-
-
     }
 
 
@@ -43,6 +39,7 @@ class AdminControllerIT {
     @Test
     void testGetAllUsers() {
 
+        userRepository.flush();
         userRepository.deleteAll();
         userRepository.save(user1);
 
