@@ -3,10 +3,7 @@ package com.example.dpp_backend.controller;
 import com.example.dpp_backend.model.User;
 import com.example.dpp_backend.repository.UserRepository;
 import io.restassured.RestAssured;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -30,11 +27,15 @@ class AdminControllerIT {
 
         RestAssured.port = port;
 
+        userRepository.flush();
+
         user1 = new User();
         user1.setId(1);
         user1.setEmail("user1@test.com");
         user1.setPassword("test");
         user1.setType("Pending");
+
+
     }
 
 
@@ -42,7 +43,8 @@ class AdminControllerIT {
     @Test
     void testGetAllUsers() {
 
-        userRepository.saveAndFlush(user1);
+        userRepository.deleteAll();
+        userRepository.save(user1);
 
         RestAssured.given()
                 .contentType("application/json")
@@ -58,12 +60,15 @@ class AdminControllerIT {
     @Test
     void testValidateUserValid() {
 
-        userRepository.saveAndFlush(user1);
+        User user2 = new User();
+        user2.setId(2);
+        user2.setType("Pending");
+        userRepository.save(user2);
 
         RestAssured.given()
                 .contentType("application/json")
                 .when()
-                .post("/admin/validate/1")
+                .post("/admin/validate/2")
                 .then()
                 .statusCode(200)
                 .body(equalTo("true"));
