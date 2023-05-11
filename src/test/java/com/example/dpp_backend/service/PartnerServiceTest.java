@@ -51,5 +51,25 @@ class PartnerServiceTest {
         assertThat(partnerService.getAllPackages(1), hasSize(2));
     }
 
+    @DisplayName("Get package by id (valid id)")
+    @Test
+    void testGetPackageByValidId() {
+
+        Package test1 = new Package();
+        test1.setEStore("PrintPlate");
+        test1.setId(1);
+
+        when(packageRepository.findById(1)).thenReturn(java.util.Optional.of(test1));
+
+        assertThat(partnerService.getPackageById(1), is(test1));
+    }
+
+    @DisplayName("Get package by id (invalid id)")
+    @Test
+    void testGetPackageByInvalidId(){
+        when(packageRepository.findById(1)).thenReturn(java.util.Optional.empty());
+        assertThat(partnerService.getPackageById(1), is(nullValue()));
+    }
+
 
 }

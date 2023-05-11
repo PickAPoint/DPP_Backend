@@ -4,6 +4,7 @@ import com.example.dpp_backend.model.Package;
 import com.example.dpp_backend.service.PartnerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,5 +23,17 @@ public class PartnerController {
             @RequestParam int partnerId
     ) {
         return partnerService.getAllPackages(partnerId);
+    }
+
+    @GetMapping("/package/{id}")
+    public ResponseEntity<Package> getPackageById(
+            @PathVariable int id
+    ) {
+        Package packageObj = partnerService.getPackageById(id);
+        if (packageObj == null) {
+            log.error("Error getting package with id {}", id);
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(packageObj);
     }
 }

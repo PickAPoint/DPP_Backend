@@ -31,8 +31,6 @@ class PartnerControllerIT {
     @Autowired
     private ClientRepository clientRepository;
 
-    @Autowired
-    private StateRepository stateRepository;
 
     private Client client1;
     private Package pkg1;
@@ -42,9 +40,8 @@ class PartnerControllerIT {
     void setUp() {
         RestAssured.port = port;
 
-        packageRepository.deleteAll();
-        clientRepository.deleteAll();
-        stateRepository.deleteAll();
+        clientRepository.flush();
+        packageRepository.flush();
 
         client1 = new Client();
         client1.setEmail("client1@test.com");
@@ -55,19 +52,21 @@ class PartnerControllerIT {
         state1.setOrderDate(new Date());
 
         pkg1 = new Package();
+        pkg1.setId(1);
         pkg1.setEStore("PrintPlate");
         pkg1.setClient(client1);
         pkg1.setOrderState(state1.getOrderState());
         pkg1.getStates().add(state1);
 
+        clientRepository.save(client1);
+        packageRepository.save(pkg1);
+
     }
+
 
     @DisplayName("Get all packages for a partner")
     @Test
     void testGetAllPackages(){
-        clientRepository.save(client1);
-//        stateRepository.save(state1);
-        packageRepository.save(pkg1);
 
         RestAssured.given()
                 .contentType("application/json")
@@ -81,5 +80,32 @@ class PartnerControllerIT {
                 .body("[0].orderState", equalTo(pkg1.getOrderState()))
                 .body("[0].states.size()", is(1))
                 .body("[0].states[0].orderState", equalTo(pkg1.getStates().get(0).getOrderState()));
+    }
+
+    @DisplayName("Get package by id (valid id)")
+    @Test
+    void testGetPackageByValidId() {
+
+        RestAssured.given()
+                .when()
+                .get("/partner/package/1")
+                .then()
+                .statusCode(200)
+                .body("estore", equalTo(pkg1.getEStore()))
+                .body("client.email", equalTo(pkg1.getClient().getEmail()))
+                .body("orderState", equalTo(pkg1.getOrderState()))
+                .body("states.size()", is(1))
+                .body("states[0].orderState", equalTo(pkg1.getStates().get(0).getOrderState()));
+    }
+
+    @DisplayName("Get package by id (invalid id)")
+    @Test
+    void testGetPackageByInvalidId(){
+
+        RestAssured.given()
+                .when()
+                .get("/partner/packages/2")
+                .then()
+                .statusCode(404);
     }
 }
