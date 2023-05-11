@@ -54,4 +54,29 @@ class PartnerControllerTest {
                 .body("[0].estore", equalTo("PrintPlate"));
     }
 
+    @DisplayName("Get package by id (valid id)")
+    @Test
+    void testGetPackageByValidId() {
+        when(partnerService.getPackageById(anyInt())).thenReturn(pkg1);
+
+        RestAssuredMockMvc.given()
+                .when()
+                .get("/partner/package/1")
+                .then()
+                .statusCode(200)
+                .body("estore", equalTo("PrintPlate"));
+    }
+
+    @DisplayName("Get package by id (invalid id)")
+    @Test
+    void testGetPackageByInvalidId(){
+        when(partnerService.getPackageById(anyInt())).thenReturn(null);
+
+        RestAssuredMockMvc.given()
+                .when()
+                .get("/partner/package/1")
+                .then()
+                .statusCode(404);
+    }
+
 }

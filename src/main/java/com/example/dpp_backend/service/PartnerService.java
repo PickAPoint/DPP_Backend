@@ -20,4 +20,8 @@ public class PartnerService {
     public List<Package> getAllPackages(int partnerId) {
         return packageRepository.findByClient_Id(partnerId);
     }
+
+    public Package getPackageById(int packageId) {
+        return packageRepository.findById(packageId).orElse(null);
+    }
 }
