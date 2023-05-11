@@ -29,7 +29,7 @@ public class User {
         this.name = registerDTO.getName();
         this.address = registerDTO.getAddress();
         this.contact = registerDTO.getContact();
-        this.type = "pending";
+        this.type = "Pending";
         setPassword(registerDTO.getPassword());
     }
 
