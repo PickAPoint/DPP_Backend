@@ -1,6 +1,7 @@
 package com.example.dpp_backend.controller;
 
 import com.example.dpp_backend.model.Client;
+import com.example.dpp_backend.model.OrderDTO;
 import com.example.dpp_backend.model.Package;
 import com.example.dpp_backend.model.State;
 import com.example.dpp_backend.repository.ClientRepository;
@@ -19,7 +20,7 @@ import static org.hamcrest.Matchers.*;
 
 // integration tests with RestAssured and hamcrest
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class PartnerControllerIT {
+class EStoreControllerIT {
 
     @LocalServerPort
     private int port;
@@ -30,10 +31,10 @@ class PartnerControllerIT {
     @Autowired
     private ClientRepository clientRepository;
 
-
     private Client client1;
     private Package pkg1;
     private State state1;
+    private OrderDTO orderDTO;
 
     @BeforeEach
     void setUp() {
@@ -60,50 +61,24 @@ class PartnerControllerIT {
         clientRepository.save(client1);
         packageRepository.save(pkg1);
 
+        orderDTO = new OrderDTO();
+        orderDTO.setEStore("PrintPlate");
+        orderDTO.setEmail("user@test.com");
+
     }
 
-
-    @DisplayName("Get all packages for a partner")
+    @DisplayName("Add package from Order")
     @Test
-    void testGetAllPackages(){
-
+    void testAddPackage() {
         RestAssured.given()
+                .contentType("application/json")
+                .body(orderDTO)
                 .when()
-                .get("/partner/packages?partnerId=1")
+                .post("/eStore/order")
                 .then()
                 .statusCode(200)
-                .body("size()", is(1))
-                .body("[0].estore", equalTo(pkg1.getEStore()))
-                .body("[0].client.email", equalTo(pkg1.getClient().getEmail()))
-                .body("[0].orderState", equalTo(pkg1.getOrderState()))
-                .body("[0].states.size()", is(1))
-                .body("[0].states[0].orderState", equalTo(pkg1.getStates().get(0).getOrderState()));
-    }
+                .body(notNullValue());
 
-    @DisplayName("Get package by id (valid id)")
-    @Test
-    void testGetPackageByValidId() {
-
-        RestAssured.given()
-                .when()
-                .get("/partner/package/1")
-                .then()
-                .statusCode(200)
-                .body("estore", equalTo(pkg1.getEStore()))
-                .body("client.email", equalTo(pkg1.getClient().getEmail()))
-                .body("orderState", equalTo(pkg1.getOrderState()))
-                .body("states.size()", is(1))
-                .body("states[0].orderState", equalTo(pkg1.getStates().get(0).getOrderState()));
-    }
-
-    @DisplayName("Get package by id (invalid id)")
-    @Test
-    void testGetPackageByInvalidId(){
-
-        RestAssured.given()
-                .when()
-                .get("/partner/packages/2")
-                .then()
-                .statusCode(404);
+        assert(packageRepository.findById(2).isPresent());
     }
 }
