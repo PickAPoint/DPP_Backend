@@ -5,7 +5,6 @@ import com.example.dpp_backend.model.Package;
 import com.example.dpp_backend.model.State;
 import com.example.dpp_backend.repository.ClientRepository;
 import com.example.dpp_backend.repository.PackageRepository;
-import com.example.dpp_backend.repository.StateRepository;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
