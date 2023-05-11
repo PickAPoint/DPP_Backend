@@ -26,4 +26,9 @@ public class AdminController {
     public boolean validateUser(@PathVariable int id) {
         return adminService.validateUser(id);
     }
+
+    @DeleteMapping("/users/{id}")
+    public boolean deleteUser(@PathVariable int id) {
+        return adminService.deleteUser(id);
+    }
 }

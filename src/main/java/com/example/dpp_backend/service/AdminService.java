@@ -42,4 +42,18 @@ public class AdminService {
         userRepository.save(user);
         return true;
     }
+
+    public boolean deleteUser(int id) {
+        User user = userRepository.findById(id).orElse(null);
+        if (user == null) {
+            log.info("User not found");
+            return false;
+        }
+        if (user.getType().equals("Admin")) {
+            log.info("Cannot delete admin");
+            return false;
+        }
+        userRepository.delete(user);
+        return true;
+    }
 }

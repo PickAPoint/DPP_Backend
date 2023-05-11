@@ -75,4 +75,26 @@ class AdminServiceTest {
         assertThat(adminService.validateUser(1), is(false));
     }
 
+    @DisplayName("Delete user (valid)")
+    @Test
+    void testDeleteUserValid() {
+        when(userRepository.findById(1)).thenReturn(java.util.Optional.of(user1));
+
+        assertThat(adminService.deleteUser(1), is(true));
+    }
+
+    @DisplayName("Delete user (invalid id)")
+    @Test
+    void testDeleteUserInvalidId() {
+        assertThat(adminService.deleteUser(1), is(false));
+    }
+
+    @DisplayName("Delete user (invalid type)")
+    @Test
+    void testDeleteUserInvalidType() {
+        when(userRepository.findById(1)).thenReturn(java.util.Optional.of(user2));
+
+        assertThat(adminService.deleteUser(1), is(false));
+    }
+
 }
