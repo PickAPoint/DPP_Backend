@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface PackageRepository extends JpaRepository<Package, Integer> {
     Optional<Package> findById(int id);
     List<Package> findByOrderState(String orderState);
+    List<Package> findByClient_Id(int clientId);
 }

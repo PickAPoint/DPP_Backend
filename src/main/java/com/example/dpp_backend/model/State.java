@@ -17,8 +17,6 @@ public class State {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @ManyToOne
-    private Package pkg;
     private String orderState;
     private Date orderDate;
 }
