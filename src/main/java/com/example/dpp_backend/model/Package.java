@@ -38,7 +38,7 @@ public class Package {
     }
 
     public boolean canBeUpdated() {
-        return !this.orderState.equals("Cancelled") && !this.orderState.equals("Completed");
+        return !this.orderState.equals("Cancelled") && !this.orderState.equals("Collected");
     }
 
 }

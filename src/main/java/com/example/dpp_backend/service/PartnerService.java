@@ -15,7 +15,6 @@ import java.util.List;
 public class PartnerService {
 
     private final PackageRepository packageRepository;
-    private final ClientRepository clientRepository;
 
     public List<Package> getAllPackages(int partnerId) {
         return packageRepository.findByPickUpId(partnerId);

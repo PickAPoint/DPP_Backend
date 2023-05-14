@@ -24,17 +24,11 @@ class PartnerServiceTest {
     @Mock
     private PackageRepository packageRepository;
 
-    @Mock
-    private ClientRepository clientRepository;
-
-    @Mock
-    private StateRepository stateRepository;
-
     private PartnerService partnerService;
 
     @BeforeEach
     void setUp() {
-        partnerService = new PartnerService(packageRepository, clientRepository);
+        partnerService = new PartnerService(packageRepository);
     }
 
     @DisplayName("Get all packages for partner")
