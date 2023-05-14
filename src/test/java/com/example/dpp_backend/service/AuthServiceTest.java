@@ -72,6 +72,7 @@ class AuthServiceTest {
         User test = new User();
         test.setEmail(login.getEmail());
         test.setPassword(login.getPassword());
+        test.setType("Partner");
 
         when(userRepository.findByEmail("test@test.com")).thenReturn(Optional.of(test));
 
@@ -88,6 +89,7 @@ class AuthServiceTest {
         User test = new User();
         test.setEmail(login.getEmail());
         test.setPassword("wrong");
+        test.setType("Partner");
 
         when(userRepository.findByEmail("test@test.com")).thenReturn(Optional.of(test));
 
@@ -104,4 +106,22 @@ class AuthServiceTest {
 
         assertThat(authService.loginUser(login), is(nullValue()));
     }
+
+    @DisplayName("Login user with that is Pending")
+    @Test
+    void testLoginUserPending() {
+
+        LoginDTO login = new LoginDTO();
+        login.setEmail("test@test.com");
+        login.setPassword("test");
+        User test = new User();
+        test.setEmail(login.getEmail());
+        test.setPassword(login.getPassword());
+        test.setType("Pending");
+
+        when(userRepository.findByEmail("test@test.com")).thenReturn(Optional.of(test));
+
+        assertThat(authService.loginUser(login), is(nullValue()));
+    }
+
 }

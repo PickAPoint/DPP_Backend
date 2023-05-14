@@ -32,6 +32,10 @@ public class AuthService {
             log.error("User not found");
             return null;
         }
+        if (user.getType().equals("Pending")) {
+            log.error("User is not a partner");
+            return null;
+        }
         if (!user.checkPassword(login.getPassword())) {
             log.error("Wrong password");
             return null;
