@@ -97,6 +97,7 @@ class AuthControllerIT {
 
         User user = new User();
         user.fromRegister(register);
+        user.setType("Partner");
         userRepository.save(user);
 
         RestAssured.given()

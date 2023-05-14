@@ -76,8 +76,7 @@ public class EStoreService {
         for (User user : users) {
             if (user.getType().equals("Partner")) {
                 PickPointDTO pickPointDTO = new PickPointDTO();
-                pickPointDTO.setId(user.getId());
-                pickPointDTO.setName(user.getName());
+                pickPointDTO.fromUser(user);
                 pickPoints.add(pickPointDTO);
             }
         }
