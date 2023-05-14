@@ -13,6 +13,8 @@ public class OrderDTO {
     private String fName;
     private String lName;
     private String email;
+    private String contact;
     private String eStore;
     private Date orderDate;
+    private int pickUpId;
 }

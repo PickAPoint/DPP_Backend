@@ -22,6 +22,7 @@ public class Package {
     private String eStore;
     private Date orderDate;
     private String orderState;
+    private int pickUpId;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<State> states = new ArrayList<>();
@@ -32,6 +33,7 @@ public class Package {
     public void fromOrder(OrderDTO orderDTO) {
         this.eStore = orderDTO.getEStore();
         this.orderDate = orderDTO.getOrderDate();
+        this.pickUpId = orderDTO.getPickUpId();
         this.orderState = "OrderPlaced";
     }
 

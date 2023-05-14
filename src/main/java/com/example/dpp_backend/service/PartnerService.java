@@ -18,7 +18,7 @@ public class PartnerService {
     private final ClientRepository clientRepository;
 
     public List<Package> getAllPackages(int partnerId) {
-        return packageRepository.findByClient_Id(partnerId);
+        return packageRepository.findByPickUpId(partnerId);
     }
 
     public Package getPackageById(int packageId) {

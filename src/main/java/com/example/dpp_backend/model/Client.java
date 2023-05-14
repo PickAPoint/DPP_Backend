@@ -17,10 +17,12 @@ public class Client {
     private String fName;
     private String lName;
     private String email;
+    private String contact;
 
     public void fromOrder(OrderDTO orderDTO) {
         this.fName = orderDTO.getFName();
         this.lName = orderDTO.getLName();
         this.email = orderDTO.getEmail();
+        this.contact = orderDTO.getContact();
     }
 }

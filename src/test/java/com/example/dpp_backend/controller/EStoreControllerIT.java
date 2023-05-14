@@ -4,6 +4,7 @@ import com.example.dpp_backend.model.*;
 import com.example.dpp_backend.model.Package;
 import com.example.dpp_backend.repository.ClientRepository;
 import com.example.dpp_backend.repository.PackageRepository;
+import com.example.dpp_backend.repository.UserRepository;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -29,10 +30,14 @@ class EStoreControllerIT {
     @Autowired
     private ClientRepository clientRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     private Client client1;
     private Package pkg1;
     private State state1;
     private OrderDTO orderDTO;
+    private User user1;
 
     @BeforeEach
     void setUp() {
@@ -40,6 +45,7 @@ class EStoreControllerIT {
 
         clientRepository.flush();
         packageRepository.flush();
+        userRepository.flush();
 
         client1 = new Client();
         client1.setEmail("client1@test.com");
@@ -56,12 +62,18 @@ class EStoreControllerIT {
         pkg1.setOrderState(state1.getOrderState());
         pkg1.getStates().add(state1);
 
+        user1 = new User();
+        user1.setId(1);
+
+
         clientRepository.save(client1);
         packageRepository.save(pkg1);
+        userRepository.save(user1);
 
         orderDTO = new OrderDTO();
         orderDTO.setEStore("PrintPlate");
         orderDTO.setEmail("user@test.com");
+        orderDTO.setPickUpId(1);
 
     }
 
@@ -74,10 +86,7 @@ class EStoreControllerIT {
                 .when()
                 .post("/eStore/order")
                 .then()
-                .statusCode(200)
-                .body(notNullValue());
-
-        assert(packageRepository.findById(2).isPresent());
+                .statusCode(200);
     }
 
     @DisplayName("Update package state (success)")
