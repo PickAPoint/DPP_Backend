@@ -1,6 +1,8 @@
 package com.example.dpp_backend.service;
 
 import com.example.dpp_backend.model.User;
+import com.example.dpp_backend.model.Package;
+import com.example.dpp_backend.repository.PackageRepository;
 import com.example.dpp_backend.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -8,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.List;
 
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
@@ -20,6 +24,9 @@ class AdminServiceTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private PackageRepository packageRepository;
+
     private AdminService adminService;
     private User user1;
     private User user2;
@@ -27,7 +34,7 @@ class AdminServiceTest {
 
     @BeforeEach
     void setUp() {
-        adminService = new AdminService(userRepository);
+        adminService = new AdminService(userRepository, packageRepository);
 
         user1 = new User();
         user1.setEmail("user1@test.com");
@@ -95,6 +102,20 @@ class AdminServiceTest {
         when(userRepository.findById(1)).thenReturn(java.util.Optional.of(user2));
 
         assertThat(adminService.deleteUser(1), is(false));
+    }
+
+    @DisplayName("Get all packages")
+    @Test
+    void testGetAllPackages() {
+
+        Package test1 = new Package();
+        test1.setEStore("PrintPlate");
+        Package test2 = new Package();
+        test2.setEStore("PrintPlate");
+
+        when(packageRepository.findAll()).thenReturn(List.of(test1, test2));
+
+        assertThat(adminService.getAllPackages(), hasSize(2));
     }
 
 }

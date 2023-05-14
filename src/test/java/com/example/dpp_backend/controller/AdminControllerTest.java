@@ -1,5 +1,6 @@
 package com.example.dpp_backend.controller;
 
+import com.example.dpp_backend.model.Package;
 import com.example.dpp_backend.model.UserDetailsDTO;
 import com.example.dpp_backend.service.AdminService;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
@@ -15,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
 
@@ -85,6 +87,25 @@ class AdminControllerTest {
                 .body(is("true"));
 
         verify(adminService, times(1)).deleteUser(anyInt());
+    }
+
+    @DisplayName("Get all packages")
+    @Test
+    void testGetAllPackages() {
+
+        Package test1 = new Package();
+        test1.setEStore("PrintPlate");
+        Package test2 = new Package();
+        test2.setEStore("PrintPlate");
+
+        when(adminService.getAllPackages()).thenReturn(List.of(test1, test2));
+
+        RestAssuredMockMvc.given()
+                .when()
+                .get("/admin/packages")
+                .then()
+                .statusCode(200)
+                .body("$", hasSize(2));
     }
 
 }

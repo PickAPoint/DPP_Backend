@@ -16,7 +16,7 @@ public class UpdateOrderDTO {
 
     public boolean isValid() {
         return (
-                List.of("Packed", "Shipped", "OutForDelivery", "Delivered", "Cancelled")
+                List.of("InTransit", "Delivered", "Collected", "Cancelled")
                         .contains(this.newState) && this.packageId > 0
         );
     }

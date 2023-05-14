@@ -1,7 +1,9 @@
 package com.example.dpp_backend.service;
 
+import com.example.dpp_backend.model.Package;
 import com.example.dpp_backend.model.User;
 import com.example.dpp_backend.model.UserDetailsDTO;
+import com.example.dpp_backend.repository.PackageRepository;
 import com.example.dpp_backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdminService {
     private final UserRepository userRepository;
+    private final PackageRepository packageRepository;
 
     public List<UserDetailsDTO> getAllUsers() {
         List<User> users = userRepository.findAll();
@@ -55,5 +58,9 @@ public class AdminService {
         }
         userRepository.delete(user);
         return true;
+    }
+
+    public List<Package> getAllPackages() {
+        return packageRepository.findAll();
     }
 }
