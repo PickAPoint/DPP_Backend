@@ -36,7 +36,7 @@ public class EStoreController {
         return ResponseEntity.ok(eStoreService.updateOrder(orderDTO));
     }
 
-    @GetMapping("/pickUps")
+    @GetMapping("/pickPoints")
     public List<PickPointDTO> getPickPoints(){
         return eStoreService.getPickPoints();
     }
