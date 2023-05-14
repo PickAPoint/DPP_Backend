@@ -1,12 +1,15 @@
 package com.example.dpp_backend.controller;
 
 import com.example.dpp_backend.model.OrderDTO;
+import com.example.dpp_backend.model.PickPointDTO;
 import com.example.dpp_backend.model.UpdateOrderDTO;
 import com.example.dpp_backend.service.EStoreService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @CrossOrigin(origins = "*") // NOSONAR
@@ -31,5 +34,10 @@ public class EStoreController {
             ){
         log.info("Updating order: {}", orderDTO);
         return ResponseEntity.ok(eStoreService.updateOrder(orderDTO));
+    }
+
+    @GetMapping("/pickPoints")
+    public List<PickPointDTO> getPickPoints(){
+        return eStoreService.getPickPoints();
     }
 }

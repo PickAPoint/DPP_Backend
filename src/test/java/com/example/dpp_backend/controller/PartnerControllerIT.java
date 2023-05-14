@@ -56,6 +56,7 @@ class PartnerControllerIT {
         pkg1.setClient(client1);
         pkg1.setOrderState(state1.getOrderState());
         pkg1.getStates().add(state1);
+        pkg1.setPickUpId(1);
 
         clientRepository.save(client1);
         packageRepository.save(pkg1);

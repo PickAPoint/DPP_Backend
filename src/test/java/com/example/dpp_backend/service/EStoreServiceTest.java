@@ -4,6 +4,7 @@ import com.example.dpp_backend.model.*;
 import com.example.dpp_backend.model.Package;
 import com.example.dpp_backend.repository.ClientRepository;
 import com.example.dpp_backend.repository.PackageRepository;
+import com.example.dpp_backend.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 
 import java.util.Date;
+import java.util.List;
 
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
@@ -27,14 +29,18 @@ class EStoreServiceTest {
     @Mock
     private ClientRepository clientRepository;
 
+    @Mock
+    private UserRepository userRepository;
+
     private EStoreService eStoreService;
     private Client client1;
     private State state1;
     private Package pkg1;
+    private User user1;
 
     @BeforeEach
     void setUp() {
-        eStoreService = new EStoreService(clientRepository, packageRepository);
+        eStoreService = new EStoreService(clientRepository, packageRepository, userRepository);
 
         client1 = new Client();
         client1.setEmail("client1@test.com");
@@ -43,6 +49,9 @@ class EStoreServiceTest {
         state1 = new State();
         state1.setOrderState("OrderPlaced");
         state1.setOrderDate(new Date());
+
+        user1 = new User();
+        user1.setId(1);
 
         pkg1 = new Package();
         pkg1.setId(1);
@@ -58,12 +67,28 @@ class EStoreServiceTest {
         OrderDTO orderDTO = new OrderDTO();
         orderDTO.setEStore("PrintPlate");
         orderDTO.setEmail("user@test.com");
+        orderDTO.setPickUpId(1);
 
+        when(userRepository.findById(1)).thenReturn(java.util.Optional.of(user1));
         when(clientRepository.save(any())).thenReturn(client1);
         when(packageRepository.save(any())).thenReturn(pkg1);
 
         int id = eStoreService.addNewOrder(orderDTO);
-        assertThat(id, notNullValue());
+        assertThat(id, is(greaterThan(0)));
+    }
+
+    @DisplayName("Add package from Order (invalid pickUpId)")
+    @Test
+    void testAddPackageInvalidPickUpId() {
+        OrderDTO orderDTO = new OrderDTO();
+        orderDTO.setEStore("PrintPlate");
+        orderDTO.setEmail("user@test.com");
+        orderDTO.setPickUpId(1);
+
+        when(userRepository.findById(1)).thenReturn(java.util.Optional.empty());
+
+        int id = eStoreService.addNewOrder(orderDTO);
+        assertThat(id, is(-1));
     }
 
     @DisplayName("Update package state (success)")
@@ -118,5 +143,17 @@ class EStoreServiceTest {
         assertThat(success, is(false));
     }
 
+    @DisplayName("Get pickpoints")
+    @Test
+    void testGetPickpoints() {
+        user1.setType("Admin");
+        User user2 = new User();
+        user2.setType("Partner");
+
+        when(userRepository.findAll()).thenReturn(java.util.Arrays.asList(user1, user2));
+
+        List<PickPointDTO> pickPoints = eStoreService.getPickPoints();
+        assertThat(pickPoints, hasSize(1));
+    }
 
 }

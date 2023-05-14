@@ -46,7 +46,7 @@ class PartnerServiceTest {
         Package test2 = new Package();
         test2.setEStore("PrintPlate");
 
-        when(packageRepository.findByClient_Id(1)).thenReturn(List.of(test1, test2));
+        when(packageRepository.findByPickUpId(1)).thenReturn(List.of(test1, test2));
 
         assertThat(partnerService.getAllPackages(1), hasSize(2));
     }

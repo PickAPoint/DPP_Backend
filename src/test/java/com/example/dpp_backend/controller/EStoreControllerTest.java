@@ -14,6 +14,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Date;
+import java.util.List;
 
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
@@ -92,5 +93,24 @@ class EStoreControllerTest {
                 .body(equalTo("true"));
 
     }
+
+    @DisplayName("Get pickpoints")
+    @Test
+    void testGetPickpoints() {
+        PickPointDTO pickPointDTO = new PickPointDTO();
+        pickPointDTO.setName("PickPoint1");
+
+        when(eStoreService.getPickPoints()).thenReturn(List.of(pickPointDTO));
+
+        RestAssuredMockMvc.given()
+                .contentType("application/json")
+                .when()
+                .get("/eStore/pickPoints")
+                .then()
+                .statusCode(200)
+                .body("name", hasItem("PickPoint1"));
+    }
+
+
 
 }
