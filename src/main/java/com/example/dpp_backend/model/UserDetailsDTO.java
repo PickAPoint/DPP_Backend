@@ -14,6 +14,7 @@ public class UserDetailsDTO {
     private String name;
     private String address;
     private String type;
+    private String contact;
 
     public UserDetailsDTO(User user) {
         this.id = user.getId();
@@ -21,5 +22,6 @@ public class UserDetailsDTO {
         this.name = user.getName();
         this.address = user.getAddress();
         this.type = user.getType();
+        this.contact = user.getContact();
     }
 }
