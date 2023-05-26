@@ -23,6 +23,7 @@ public class Package {
     private Date orderDate;
     private String orderState;
     private int pickUpId;
+    private String token;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<State> states = new ArrayList<>();
