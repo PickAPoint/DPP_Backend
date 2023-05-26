@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class TokenGeneratorTest {
+class TokenGeneratorTest {
 
     private TokenGenerator tokenGenerator = new TokenGenerator();
 

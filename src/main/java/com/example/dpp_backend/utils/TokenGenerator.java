@@ -1,15 +1,15 @@
 package com.example.dpp_backend.utils;
 
-import java.util.Random;
+import java.security.SecureRandom;
 
 import org.springframework.stereotype.Component;
 
 @Component
 public class TokenGenerator {
 
-    private final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    private final int TOKEN_LENGTH = 6;
-    private final Random rand = new Random();
+    private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    private static final int TOKEN_LENGTH = 6;
+    private final SecureRandom rand = new SecureRandom();
 
     public String generate() {
         StringBuilder token = new StringBuilder(TOKEN_LENGTH);

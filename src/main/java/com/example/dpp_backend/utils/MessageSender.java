@@ -13,18 +13,18 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class MessageSender {
 
-    private String ACCOUNT_SID;
-    private String AUTH_TOKEN;
+    private String accountSid;
+    private String authToken;
 
 
-    public MessageSender(@Value("${twilio.account_sid}") String ACCOUNT_SID, @Value("${twilio.auth_token}") String AUTH_TOKEN) {
-        this.ACCOUNT_SID = ACCOUNT_SID;
-        this.AUTH_TOKEN = AUTH_TOKEN;
+    public MessageSender(@Value("${twilio.account_sid}") String accountSid, @Value("${twilio.auth_token}") String authToken) {
+        this.accountSid = accountSid;
+        this.authToken = authToken;
     }
 
 
     public boolean send(String message, String phoneNumber) {
-        Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+        Twilio.init(accountSid, authToken);
 
         try {
             
@@ -41,7 +41,6 @@ public class MessageSender {
 
         } catch (Exception e) {
             log.error("Error sending message to {}", phoneNumber);
-            e.printStackTrace();
             return false;
         }
     }
