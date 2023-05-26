@@ -70,6 +70,12 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.twilio.sdk</groupId>
+            <artifactId>twilio</artifactId>
+            <version>9.6.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>
