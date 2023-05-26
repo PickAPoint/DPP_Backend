@@ -2,6 +2,9 @@ package com.example.dpp_backend.utils;
 
 import java.util.Random;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class TokenGenerator {
 
     private final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";

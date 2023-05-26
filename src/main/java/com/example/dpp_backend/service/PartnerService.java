@@ -4,8 +4,8 @@ import com.example.dpp_backend.repository.PackageRepository;
 import com.example.dpp_backend.utils.MessageSender;
 import com.example.dpp_backend.utils.TokenGenerator;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Service;
 import com.example.dpp_backend.model.Package;
 import com.example.dpp_backend.model.State;
@@ -16,13 +16,18 @@ import java.util.List;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class PartnerService {
 
-    private final PackageRepository packageRepository;
-    private final MessageSender messageSender;
-    private final TokenGenerator tokenGenerator;
 
+    private PackageRepository packageRepository;
+    private MessageSender messageSender;
+    private TokenGenerator tokenGenerator;
+
+    public PartnerService(PackageRepository packageRepository, MessageSender messageSender, TokenGenerator tokenGenerator) {
+        this.packageRepository = packageRepository;
+        this.messageSender = messageSender;
+        this.tokenGenerator = tokenGenerator;
+    }
 
     public List<Package> getAllPackages(int partnerId) {
         return packageRepository.findByPickUpId(partnerId);
