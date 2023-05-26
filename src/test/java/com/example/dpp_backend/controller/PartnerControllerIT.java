@@ -3,6 +3,7 @@ package com.example.dpp_backend.controller;
 import com.example.dpp_backend.model.Client;
 import com.example.dpp_backend.model.Package;
 import com.example.dpp_backend.model.State;
+import com.example.dpp_backend.model.UpdatePackageDTO;
 import com.example.dpp_backend.repository.ClientRepository;
 import com.example.dpp_backend.repository.PackageRepository;
 import io.restassured.RestAssured;
@@ -107,4 +108,94 @@ class PartnerControllerIT {
                 .then()
                 .statusCode(404);
     }
+
+    @DisplayName("Update package state (success)")
+    @Test
+    void testUpdatePackageStateSuccess() {
+        UpdatePackageDTO updatePackageDTO = new UpdatePackageDTO();
+        updatePackageDTO.setPackageId(1);
+        updatePackageDTO.setNewState("Delivered");
+
+        RestAssured.given()
+                .contentType("application/json")
+                .body(updatePackageDTO)
+                .when()
+                .put("/partner/package")
+                .then()
+                .statusCode(200)
+                .body(equalTo("true"));
+    }
+
+    @DisplayName("Update package state with invalid state")
+    @Test
+    void testUpdatePackageStateInvalidState() {
+        UpdatePackageDTO updatePackageDTO = new UpdatePackageDTO();
+        updatePackageDTO.setPackageId(1);
+        updatePackageDTO.setNewState("Cancelled");
+
+        RestAssured.given()
+                .contentType("application/json")
+                .body(updatePackageDTO)
+                .when()
+                .put("/partner/package")
+                .then()
+                .statusCode(200)
+                .body(equalTo("false"));
+    }
+
+    @DisplayName("Update package state with invalid id")
+    @Test
+    void testUpdatePackageStateInvalidId() {
+        UpdatePackageDTO updatePackageDTO = new UpdatePackageDTO();
+        updatePackageDTO.setPackageId(2);
+        updatePackageDTO.setNewState("Delivered");
+
+        RestAssured.given()
+                .contentType("application/json")
+                .body(updatePackageDTO)
+                .when()
+                .put("/partner/package")
+                .then()
+                .statusCode(200)
+                .body(equalTo("false"));
+    }
+
+    @DisplayName("Update package state when cancelled")
+    @Test
+    void testUpdatePackageStateWhenCancelled() {
+        pkg1.setOrderState("Cancelled");
+        packageRepository.save(pkg1);
+
+        UpdatePackageDTO updatePackageDTO = new UpdatePackageDTO();
+        updatePackageDTO.setPackageId(2);
+        updatePackageDTO.setNewState("Delivered");
+
+        RestAssured.given()
+                .contentType("application/json")
+                .body(updatePackageDTO)
+                .when()
+                .put("/partner/package")
+                .then()
+                .statusCode(200)
+                .body(equalTo("false"));
+    }
+
+    @DisplayName("Update package state to Collected using invalid token")
+    @Test
+    void testUpdatePackageStateInvalidToken() {
+        UpdatePackageDTO updatePackageDTO = new UpdatePackageDTO();
+        updatePackageDTO.setPackageId(2);
+        updatePackageDTO.setNewState("Collected");
+        updatePackageDTO.setToken("------");
+
+        RestAssured.given()
+                .contentType("application/json")
+                .body(updatePackageDTO)
+                .when()
+                .put("/partner/package")
+                .then()
+                .statusCode(200)
+                .body(equalTo("false"));
+    }
+
 }
