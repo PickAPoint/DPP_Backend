@@ -1,6 +1,7 @@
 package com.example.dpp_backend.controller;
 
 import com.example.dpp_backend.model.Package;
+import com.example.dpp_backend.model.UpdatePackageDTO;
 import com.example.dpp_backend.service.PartnerService;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.BeforeEach;
@@ -79,4 +80,47 @@ class PartnerControllerTest {
                 .statusCode(404);
     }
 
+    @DisplayName("Update package state (success)")
+    @Test
+    void testUpdatePackageStateSuccess() {
+        UpdatePackageDTO updatePackageDTO = new UpdatePackageDTO();
+        updatePackageDTO.setPackageId(1);
+        updatePackageDTO.setNewState("InTransit");
+
+        when(partnerService.updatePackage(any())).thenReturn(true);
+
+        RestAssuredMockMvc.given()
+                .contentType("application/json")
+                .body(updatePackageDTO)
+                .when()
+                .put("/partner/package")
+                .then()
+                .statusCode(200)
+                .body(equalTo("true"));
+        
+        //verify if the updatePackage method is called
+        verify(partnerService, times(1)).updatePackage(any());
+    }
+
+    @DisplayName("Update package state (failure)")
+    @Test
+    void testUpdatePackageStateFailure() {
+        UpdatePackageDTO updatePackageDTO = new UpdatePackageDTO();
+        updatePackageDTO.setPackageId(1);
+        updatePackageDTO.setNewState("Cancelled");
+
+        when(partnerService.updatePackage(any())).thenReturn(false);
+
+        RestAssuredMockMvc.given()
+                .contentType("application/json")
+                .body(updatePackageDTO)
+                .when()
+                .put("/partner/package")
+                .then()
+                .statusCode(200)
+                .body(equalTo("false"));
+        
+        //verify if the updatePackage method is called
+        verify(partnerService, times(1)).updatePackage(any());
+    }
 }
