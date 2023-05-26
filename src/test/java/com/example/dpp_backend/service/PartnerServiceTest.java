@@ -94,6 +94,7 @@ class PartnerServiceTest {
         when(packageRepository.findById(1)).thenReturn(java.util.Optional.of(pkg));
         when(packageRepository.save(any())).thenReturn(pkg);
         when(tokenGenerator.generate()).thenReturn("123456");
+        when(messageSender.send(anyString(), anyString())).thenReturn(true);
 
         boolean success = partnerService.updatePackage(updatePackageDTO);
         assertThat(success, is(true));
