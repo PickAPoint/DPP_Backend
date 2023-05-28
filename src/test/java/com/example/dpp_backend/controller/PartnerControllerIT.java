@@ -86,9 +86,13 @@ class PartnerControllerIT {
     @Test
     void testGetPackageByValidId() {
 
+        packageRepository.flush();
+        packageRepository.deleteAll();
+        Package p = packageRepository.save(pkg1);
+
         RestAssured.given()
                 .when()
-                .get("/partner/package/1")
+                .get("/partner/package/" + p.getId())
                 .then()
                 .statusCode(200)
                 .body("estore", equalTo(pkg1.getEStore()))
@@ -112,8 +116,12 @@ class PartnerControllerIT {
     @DisplayName("Update package state (success)")
     @Test
     void testUpdatePackageStateSuccess() {
+        packageRepository.flush();
+        packageRepository.deleteAll();
+        Package p = packageRepository.save(pkg1);
+
         UpdatePackageDTO updatePackageDTO = new UpdatePackageDTO();
-        updatePackageDTO.setPackageId(1);
+        updatePackageDTO.setPackageId(p.getId());
         updatePackageDTO.setNewState("Delivered");
 
         RestAssured.given()
