@@ -154,8 +154,12 @@ class PartnerControllerIT {
     @DisplayName("Update package state with invalid id")
     @Test
     void testUpdatePackageStateInvalidId() {
+        packageRepository.flush();
+        packageRepository.deleteAll();
+        Package p = packageRepository.save(pkg1);
+        
         UpdatePackageDTO updatePackageDTO = new UpdatePackageDTO();
-        updatePackageDTO.setPackageId(2);
+        updatePackageDTO.setPackageId(p.getId() + 1);
         updatePackageDTO.setNewState("Delivered");
 
         RestAssured.given()
@@ -171,11 +175,13 @@ class PartnerControllerIT {
     @DisplayName("Update package state when cancelled")
     @Test
     void testUpdatePackageStateWhenCancelled() {
+        packageRepository.flush();
+        packageRepository.deleteAll();
         pkg1.setOrderState("Cancelled");
-        packageRepository.save(pkg1);
+        Package p = packageRepository.save(pkg1);
 
         UpdatePackageDTO updatePackageDTO = new UpdatePackageDTO();
-        updatePackageDTO.setPackageId(2);
+        updatePackageDTO.setPackageId(p.getId());
         updatePackageDTO.setNewState("Delivered");
 
         RestAssured.given()
