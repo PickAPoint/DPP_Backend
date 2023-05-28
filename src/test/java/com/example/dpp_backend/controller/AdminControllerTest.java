@@ -1,6 +1,7 @@
 package com.example.dpp_backend.controller;
 
 import com.example.dpp_backend.model.Package;
+import com.example.dpp_backend.model.UpdatePackageDTO;
 import com.example.dpp_backend.model.UserDetailsDTO;
 import com.example.dpp_backend.service.AdminService;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
@@ -16,7 +17,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
 
@@ -33,6 +33,8 @@ class AdminControllerTest {
 
     private UserDetailsDTO userDetails;
 
+    private Package pkg1;
+
     @BeforeEach
     void setUp() {
         RestAssuredMockMvc.mockMvc(mockMvc);
@@ -42,6 +44,9 @@ class AdminControllerTest {
         userDetails.setName("name");
         userDetails.setAddress("address");
         userDetails.setType("Pending");
+
+        pkg1 = new Package();
+        pkg1.setEStore("PrintPlate");
     }
 
     @DisplayName("Get all users")
@@ -106,6 +111,75 @@ class AdminControllerTest {
                 .then()
                 .statusCode(200)
                 .body("$", hasSize(2));
+    }
+
+    @DisplayName("Get package by id (valid)")
+    @Test
+    void testGetPackageByValidId() {
+        when(adminService.getPackageById(anyInt())).thenReturn(pkg1);
+
+        RestAssuredMockMvc.given()
+                .when()
+                .get("/admin/package/1")
+                .then()
+                .statusCode(200)
+                .body("estore", equalTo("PrintPlate"));
+    }
+
+    @DisplayName("Get package by id (invalid id)")
+    @Test
+    void testGetPackageByInvalidId(){
+        when(adminService.getPackageById(anyInt())).thenReturn(null);
+
+        RestAssuredMockMvc.given()
+                .when()
+                .get("/admin/package/1")
+                .then()
+                .statusCode(404);
+    }
+
+    @DisplayName("Update package state (success)")
+    @Test
+    void testUpdatePackageStateSuccess() {
+        UpdatePackageDTO updatePackageDTO = new UpdatePackageDTO();
+        updatePackageDTO.setPackageId(1);
+        updatePackageDTO.setNewState("InTransit");
+
+        when(adminService.updatePackage(any())).thenReturn(true);
+
+        RestAssuredMockMvc.given()
+                .contentType("application/json")
+                .body(updatePackageDTO)
+                .when()
+                .put("/admin/package")
+                .then()
+                .statusCode(200)
+                .body(equalTo("true"));
+        
+        //verify if the updatePackage method is called
+        verify(adminService, times(1)).updatePackage(any());
+    }
+
+    @DisplayName("Update package state (failure)")
+    @Test
+    void testUpdatePackageStateFailure() {
+        UpdatePackageDTO updatePackageDTO = new UpdatePackageDTO();
+        updatePackageDTO.setPackageId(1);
+        updatePackageDTO.setNewState("InTransit");
+
+        when(adminService.updatePackage(any())).thenReturn(false);
+
+        RestAssuredMockMvc.given()
+                .contentType("application/json")
+                .body(updatePackageDTO)
+                .when()
+                .put("/admin/package")
+                .then()
+                .statusCode(200)
+                .body(equalTo("false"));
+
+        //verify if the updatePackage method is called
+        verify(adminService, times(1)).updatePackage(any());
     }
 
 }

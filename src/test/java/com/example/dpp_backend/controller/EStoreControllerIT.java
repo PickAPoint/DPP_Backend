@@ -92,8 +92,12 @@ class EStoreControllerIT {
     @DisplayName("Update package state (success)")
     @Test
     void testUpdatePackageStateSuccess() {
+        packageRepository.flush();
+        packageRepository.deleteAll();
+        Package p = packageRepository.save(pkg1);
+
         UpdateOrderDTO updateOrderDTO = new UpdateOrderDTO();
-        updateOrderDTO.setPackageId(1);
+        updateOrderDTO.setPackageId(p.getId());
         updateOrderDTO.setNewState("Cancelled");
 
         RestAssured.given()
