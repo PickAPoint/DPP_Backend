@@ -17,5 +17,5 @@ jobs:
             export_default_credentials: true
       
         - name: Deploy to Google Cloud VM
-          run: gcloud compute ssh rafafergon@instance-1 --zone=europe-southwest1-a --command="cd /home/rafafergon/DPP_Backend; git pull; sudo docker build -t dpp_backend .; sudo docker rm -f $(sudo docker ps -q --filter 'expose=8081/tcp'); sudo docker run -p 8081:8081 -d dpp_backend"
+          run: gcloud compute ssh rafafergon@instance-1 --zone=europe-southwest1-a --command="cd /home/rafafergon/DPP_Backend; git pull; sudo docker build -t dpp_backend .; sudo fuser -k 8081/tcp; sudo docker rm -f $(sudo docker ps -q --filter 'expose=8081/tcp'); sudo docker run -p 8081:8081 -d dpp_backend"
 
