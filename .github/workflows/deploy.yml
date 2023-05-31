@@ -1,0 +1,21 @@
+# on push to main
+name: CD
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+      name: Deploy
+      runs-on: ubuntu-latest
+      steps:
+        - name: Connect to Google Cloud VM
+          uses: google-github-actions/setup-gcloud@v0
+          with:
+            project_id: ${{ secrets.PROJECT_ID }}
+            service_account_key: ${{ secrets.SERVICE_ACCOUNT_KEY }}
+            export_default_credentials: true
+      
+        - name: Deploy to Google Cloud VM
+          run: gcloud compute ssh rafafergon@instance-1 --zone=europe-southwest1-a --command="cd /home/rafafergon/DPP_Backend; git pull; sudo docker build -t dpp_backend .; docker rm -f $(docker ps -q --filter 'expose=8081/tcp'); sudo docker run -p 8081:8081 -d dpp_backend"
+
