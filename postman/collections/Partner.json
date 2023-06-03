@@ -1,0 +1,61 @@
+{
+	"info": {
+		"_postman_id": "c5e351fd-7963-420e-b497-d49f5e757498",
+		"name": "Partner",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_uid": "27497156-c5e351fd-7963-420e-b497-d49f5e757498"
+	},
+	"item": [
+		{
+			"name": "{{base_url}}/partner/package/1",
+			"id": "2426ad8a-d427-4ed9-a986-b7d96babc375",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/partner/package/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"partner",
+						"package",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{base_url}}/partner/packages?partnerId=2",
+			"id": "2330d6a8-5abf-4aa7-ac2b-c27d3df24caa",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/partner/packages?partnerId=2",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"partner",
+						"packages"
+					],
+					"query": [
+						{
+							"key": "partnerId",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

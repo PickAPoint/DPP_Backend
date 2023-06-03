@@ -1,0 +1,235 @@
+{
+	"info": {
+		"_postman_id": "5501e964-1af4-44d9-86f7-88028889fa76",
+		"name": "Admin",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_uid": "27497156-5501e964-1af4-44d9-86f7-88028889fa76"
+	},
+	"item": [
+		{
+			"name": "{{base_url}}/admin/users",
+			"id": "61945a60-eb4c-4e5d-8565-d39f88b14ce2",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"rfg@ua.pt\",\n    \"password\": \"linux2023\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/admin/users",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"admin",
+						"users"
+					]
+				}
+			},
+			"response": [
+				{
+					"id": "03dc902f-2761-4636-858f-38b9cebb5d41",
+					"name": "{{base_url}}/admin/users",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"rfg@ua.pt\",\n    \"password\": \"linux2023\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"users"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 18 May 2023 14:47:29 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": 2,\n        \"email\": \"rfg@ua.pt\",\n        \"name\": \"Rafael Gonçalves\",\n        \"address\": \"DETI - UA, Aveiro\",\n        \"type\": \"Pending\",\n        \"contact\": \"232123456\"\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "{{base_url}}/admin/validate/2",
+			"id": "3f7281cd-318d-45ef-a715-939b3e091c1d",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/admin/validate/2",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"admin",
+						"validate",
+						"2"
+					]
+				}
+			},
+			"response": [
+				{
+					"id": "7ebe4509-f99d-4bb9-9d37-2a191d320bf0",
+					"name": "{{base_url}}/admin/validate/2",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/validate/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"validate",
+								"2"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 18 May 2023 14:47:44 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "true"
+				}
+			]
+		},
+		{
+			"name": "{{base_url}}/admin/users/3",
+			"id": "c3433829-12ae-43f4-bb06-55cc20dcf6b1",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/admin/users/3",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"admin",
+						"users",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{base_url}}/admin/packages",
+			"id": "7c7dc41b-aee5-4ada-b56b-8a32ec2f4b63",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/admin/packages",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"admin",
+						"packages"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
