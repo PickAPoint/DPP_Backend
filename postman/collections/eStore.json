@@ -1,0 +1,94 @@
+{
+	"info": {
+		"_postman_id": "9ff98a21-fcae-4614-92b9-7281383256fb",
+		"name": "eStore",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_uid": "27497156-9ff98a21-fcae-4614-92b9-7281383256fb"
+	},
+	"item": [
+		{
+			"name": "{{base_url}}/eStore/order",
+			"id": "6390af91-65bc-40ad-ab77-e32af85adab3",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"fName\": \"Rafael\",\n    \"lName\": \"Gonçalves\",\n    \"email\": \"rfg@ua.pt\",\n    \"contact\": \"234000000\",\n    \"eStore\": \"PrintPlate\",\n    \"orderDate\": \"2023-05-10T23:45:00.000\",\n    \"pickUpId\": 2\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/eStore/order",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"eStore",
+						"order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{base_url}}/eStore/order",
+			"id": "972c51f1-115c-443a-91cb-c3fdbd0b4069",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"packageId\": 1,\n    \"newState\": \"InTransit\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/eStore/order",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"eStore",
+						"order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{base_url}}/eStore/pickPoints",
+			"id": "49fb5756-9aa1-4213-8ba1-d8ca59f44b21",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/eStore/pickPoints",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"eStore",
+						"pickPoints"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
